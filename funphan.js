@@ -60,7 +60,7 @@
                   e = e$;
                   return "runtime eval error " + e.message;
                 }
-              }, curry$, cb.toString()));
+              }, curry$, "(" + cb.toString() + ")();"));
             }, 1000);
           default:
             return exit(1, "page open error " + status);
