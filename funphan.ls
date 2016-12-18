@@ -36,13 +36,13 @@ funphan = (fuse_ttl) ->
       switch status
         when "success"
           <-- setTimeout(_, 1000)
-          evalfun = (curry$, cbstr, ...additional) ->
+          evalfun = (curry$, cbstr, ...[additional]) ->
             try
               this_function = eval(cbstr)
               this_function.apply(this_function, additional)
             catch
               "runtime eval error #{e.message}"
-          page.evaluate.apply(page.evaluate, [evalfun, curry$, "(#{cb.toString()})"].concat(additional))
+          page.evaluate(evalfun, curry$, "(#{cb.toString()})", additional)
           |> outobj.parse(_)
         default
           exit(1, "page open error #{status}")

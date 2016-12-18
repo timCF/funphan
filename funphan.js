@@ -71,12 +71,12 @@
             return setTimeout(function(){
               var evalfun;
               evalfun = function(curry$, cbstr){
-                var additional, res$, i$, to$, this_function, e;
+                var ref$, res$, i$, to$, additional, this_function, e;
                 res$ = [];
                 for (i$ = 2, to$ = arguments.length; i$ < to$; ++i$) {
                   res$.push(arguments[i$]);
                 }
-                additional = res$;
+                ref$ = res$; additional = ref$[0];
                 try {
                   this_function = eval(cbstr);
                   return this_function.apply(this_function, additional);
@@ -85,7 +85,7 @@
                   return "runtime eval error " + e.message;
                 }
               };
-              return outobj.parse(page.evaluate.apply(page.evaluate, [evalfun, curry$, "(" + cb.toString() + ")"].concat(additional)));
+              return outobj.parse(page.evaluate(evalfun, curry$, "(" + cb.toString() + ")", additional));
             }, 1000);
           default:
             return exit(1, "page open error " + status);
