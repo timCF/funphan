@@ -24,16 +24,18 @@ funphan = (fuse_ttl) ->
       console.log(data)
       exit(0, false)
     # cb is simple &callback/0 should return required data from page url
-    open: (url, cb) -->
+    open: (url, cb, ...additional) ->
       status <-- page.open(url)
       switch status
         when "success"
           <-- setTimeout(_, 1000)
-          page.evaluate(((curry$, cbstr) ->
+          evalfun = (curry$, cbstr, ...additional) ->
             try
-              eval(cbstr)
+              this_function = eval(cbstr)
+              this_function.apply(this_function, additional)
             catch
-              "runtime eval error #{e.message}"), curry$, "(#{cb.toString()})();")
+              "runtime eval error #{e.message}"
+          page.evaluate.apply(page.evaluate, [evalfun, curry$, "(#{cb.toString()})"].concat(additional))
           |> outobj.parse(_)
         default
           exit(1, "page open error #{status}")

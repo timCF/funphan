@@ -47,26 +47,40 @@
         console.log(data);
         return exit(0, false);
       },
-      open: curry$(function(url, cb){
+      open: function(url, cb){
+        var additional, res$, i$, to$;
+        res$ = [];
+        for (i$ = 2, to$ = arguments.length; i$ < to$; ++i$) {
+          res$.push(arguments[i$]);
+        }
+        additional = res$;
         return page.open(url, function(status){
           switch (status) {
           case "success":
             return setTimeout(function(){
-              return outobj.parse(page.evaluate(function(curry$, cbstr){
-                var e;
+              var evalfun;
+              evalfun = function(curry$, cbstr){
+                var additional, res$, i$, to$, this_function, e;
+                res$ = [];
+                for (i$ = 2, to$ = arguments.length; i$ < to$; ++i$) {
+                  res$.push(arguments[i$]);
+                }
+                additional = res$;
                 try {
-                  return eval(cbstr);
+                  this_function = eval(cbstr);
+                  return this_function.apply(this_function, additional);
                 } catch (e$) {
                   e = e$;
                   return "runtime eval error " + e.message;
                 }
-              }, curry$, "(" + cb.toString() + ")();"));
+              };
+              return outobj.parse(page.evaluate.apply(page.evaluate, [evalfun, curry$, "(" + cb.toString() + ")"].concat(additional)));
             }, 1000);
           default:
             return exit(1, "page open error " + status);
           }
         });
-      })
+      }
     };
   };
   module.exports = funphan;
