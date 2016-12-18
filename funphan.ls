@@ -34,7 +34,7 @@ funphan = (fuse_ttl) ->
               eval(cb)
             catch
               "runtime eval error #{e.message}"), curry$, cb.toString())
-          |> funphan.parse(_)
+          |> @.parse(_)
         default
           exit(1, "page open error #{status}")
   }

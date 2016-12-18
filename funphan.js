@@ -52,7 +52,7 @@
           switch (status) {
           case "success":
             return setTimeout(function(){
-              return funphan.parse(page.evaluate(function(curry$, jfstr){
+              return this.parse(page.evaluate(function(curry$, jfstr){
                 var e;
                 try {
                   return eval(cb);
