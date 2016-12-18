@@ -29,9 +29,9 @@ funphan = (fuse_ttl) ->
       switch status
         when "success"
           <-- setTimeout(_, 1000)
-          page.evaluate(((curry$, jfstr) ->
+          page.evaluate(((curry$, cbstr) ->
             try
-              eval(cb)
+              eval(cbstr)
             catch
               "runtime eval error #{e.message}"), curry$, cb.toString())
           |> @.parse(_)

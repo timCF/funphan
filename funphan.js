@@ -52,10 +52,10 @@
           switch (status) {
           case "success":
             return setTimeout(function(){
-              return this.parse(page.evaluate(function(curry$, jfstr){
+              return this.parse(page.evaluate(function(curry$, cbstr){
                 var e;
                 try {
-                  return eval(cb);
+                  return eval(cbstr);
                 } catch (e$) {
                   e = e$;
                   return "runtime eval error " + e.message;
