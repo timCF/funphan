@@ -16,16 +16,26 @@
     };
     fuse();
     page.onConsoleMessage = curry$(function(msg, lineNum, sourceId){
-      return "ok";
+      if (outobj.debug) {
+        return console.log("debug : console : msg = " + msg + " , lineNum = " + lineNum + " , sourceId = " + sourceId);
+      }
     });
     page.onUrlChanged = function(url){
-      return "ok";
+      if (outobj.debug) {
+        return console.log("debug : new url = " + url);
+      }
     };
     page.onError = curry$(function(msg, trace){
-      return fuse();
+      fuse();
+      if (outobj.debug) {
+        return console.log("debug : page error : msg = " + msg + " , trace = " + trace);
+      }
     });
     phantom.onError = curry$(function(msg, trace){
-      return fuse();
+      fuse();
+      if (outobj.debug) {
+        return console.log("debug : phantom error : msg = " + msg + " , trace = " + trace);
+      }
     });
     exit = curry$(function(code, error){
       fuse();
@@ -40,6 +50,7 @@
       }
     });
     return outobj = {
+      debug: false,
       page: page,
       exit: exit,
       args: args,

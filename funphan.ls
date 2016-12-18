@@ -6,16 +6,23 @@ funphan = (fuse_ttl) ->
   fuse = -> setTimeout((-> exit(1, "FUSE TIMEOUT ERROR")), (if fuse_ttl then fuse_ttl else 30000))
   fuse()
   # disable logging
-  page.onConsoleMessage = (msg, lineNum, sourceId) --> "ok"
-  page.onUrlChanged = (url) --> "ok"
-  page.onError = (msg, trace) --> fuse()
-  phantom.onError = (msg, trace) --> fuse()
+  page.onConsoleMessage = (msg, lineNum, sourceId) -->
+    if outobj.debug then console.log("debug : console : msg = #{msg} , lineNum = #{lineNum} , sourceId = #{sourceId}")
+  page.onUrlChanged = (url) -->
+    if outobj.debug then console.log("debug : new url = #{url}")
+  page.onError = (msg, trace) -->
+    fuse()
+    if outobj.debug then console.log("debug : page error : msg = #{msg} , trace = #{trace}")
+  phantom.onError = (msg, trace) -->
+    fuse()
+    if outobj.debug then console.log("debug : phantom error : msg = #{msg} , trace = #{trace}")
   exit = (code, error) -->
     fuse()
     if error then console.log(error)
     setTimeout((-> phantom.exit(code)), 1000)
     if page then page.close()
   outobj = {
+    debug: false,
     page: page,
     exit: exit,
     args: args,
