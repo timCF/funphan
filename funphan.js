@@ -8,7 +8,7 @@
   };
   ref$ = require('system').args, _ = ref$[0], args = slice$.call(ref$, 1);
   funphan = function(fuse_ttl){
-    var fuse, exit;
+    var fuse, exit, outobj;
     fuse = function(){
       return setTimeout(function(){
         return exit(1, "FUSE TIMEOUT ERROR");
@@ -39,7 +39,7 @@
         return page.close();
       }
     });
-    return {
+    return outobj = {
       page: page,
       exit: exit,
       args: args,
@@ -52,7 +52,7 @@
           switch (status) {
           case "success":
             return setTimeout(function(){
-              return this.parse(page.evaluate(function(curry$, cbstr){
+              return outobj.parse(page.evaluate(function(curry$, cbstr){
                 var e;
                 try {
                   return eval(cbstr)();

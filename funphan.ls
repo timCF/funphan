@@ -15,7 +15,7 @@ funphan = (fuse_ttl) ->
     if error then console.log(error)
     setTimeout((-> phantom.exit(code)), 1000)
     if page then page.close()
-  {
+  outobj = {
     page: page,
     exit: exit,
     args: args,
@@ -34,7 +34,7 @@ funphan = (fuse_ttl) ->
               eval(cbstr)()
             catch
               "runtime eval error #{e.message}"), curry$, cb.toString())
-          |> @.parse(_)
+          |> outobj.parse(_)
         default
           exit(1, "page open error #{status}")
   }
