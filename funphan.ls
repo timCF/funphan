@@ -31,7 +31,7 @@ funphan = (fuse_ttl) ->
           <-- setTimeout(_, 1000)
           page.evaluate(((curry$, cbstr) ->
             try
-              eval(cbstr)()
+              eval(cbstr)
             catch
               "runtime eval error #{e.message}"), curry$, "(#{cb.toString()})();")
           |> outobj.parse(_)

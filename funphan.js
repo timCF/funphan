@@ -55,7 +55,7 @@
               return outobj.parse(page.evaluate(function(curry$, cbstr){
                 var e;
                 try {
-                  return eval(cbstr)();
+                  return eval(cbstr);
                 } catch (e$) {
                   e = e$;
                   return "runtime eval error " + e.message;
